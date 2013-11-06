@@ -161,6 +161,7 @@ class Status(object):
       withheld_scope:
     '''
     param_defaults = {
+      '_data':                   None,
       'coordinates':             None,
       'contributors':            None,
       'created_at':              None,
@@ -644,6 +645,8 @@ class Status(object):
       A dict representing this twitter.Status instance
     '''
     data = {}
+    if self._data:
+      data['_data'] = self._data
     if self.created_at:
       data['created_at'] = self.created_at
     if self.favorited:
@@ -744,7 +747,8 @@ class Status(object):
         media = data['entities']['media']
       else:
         media = []
-    return Status(created_at=data.get('created_at', None),
+    return Status(_data=data,
+                  created_at=data.get('created_at', None),
                   favorited=data.get('favorited', None),
                   favorite_count=data.get('favorite_count', None),
                   id=data.get('id', None),
